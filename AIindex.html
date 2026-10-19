@@ -1,0 +1,256 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>陳冠年的第一個網頁</title>
+
+<style>
+  /* ===== 設計變數 ===== */
+  :root {
+    --primary:      #7c3aed;   /* 主色：紫 */
+    --primary-dark: #5b21b6;   /* 深紫：標題 */
+    --primary-soft: #ede9fe;   /* 淺紫：表頭、hover */
+    --bg:           #f8f7fc;   /* 頁面背景 */
+    --surface:      #ffffff;   /* 卡片白 */
+    --text:         #1e1b2e;   /* 主要文字 */
+    --text-muted:   #5b5869;   /* 次要文字 */
+    --border:       #e6e2f0;   /* 邊框 */
+    --shadow: 0 1px 2px rgba(30,27,46,.04), 0 8px 24px rgba(30,27,46,.06);
+    --radius:       16px;
+    --gap:          1.5rem;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
+                 "Microsoft JhengHei", "PingFang TC", system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    font-size: 16px;
+  }
+
+  a {
+    color: var(--primary);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: color .2s ease, border-color .2s ease;
+  }
+  a:hover {
+    color: var(--primary-dark);
+    border-bottom-color: currentColor;
+  }
+
+  /* ===== 頁首 ===== */
+  .hero {
+    background: linear-gradient(135deg, #7c3aed 0%, #a855f7 100%);
+    color: #fff;
+    padding: 4rem 1.5rem 3.5rem;
+    text-align: center;
+  }
+  .hero h1 {
+    margin: 0 auto;
+    max-width: 780px;
+    font-size: clamp(1.5rem, 2.4vw + 1rem, 2.4rem);
+    font-weight: 700;
+    letter-spacing: .03em;
+  }
+
+  /* ===== 主內容：卡片堆疊 ===== */
+  main {
+    max-width: 820px;
+    margin: -2rem auto 4rem;
+    padding: 0 1.25rem;
+    display: grid;
+    gap: var(--gap);
+  }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 2rem;
+    box-shadow: var(--shadow);
+  }
+
+  .card h2 {
+    position: relative;
+    margin: 0 0 1rem;
+    padding-bottom: .55rem;
+    font-size: 1.375rem;
+    color: var(--primary-dark);
+  }
+  .card h2::after {
+    content: "";
+    position: absolute;
+    left: 0; bottom: 0;
+    width: 2.5rem; height: 3px;
+    border-radius: 2px;
+    background: linear-gradient(90deg, var(--primary), #c084fc);
+  }
+
+  .card h3 {
+    margin: .25rem 0 0;
+    font-size: 1.05rem;
+    font-weight: 500;
+    color: var(--text-muted);
+  }
+
+  /* 標題內的連結跟隨標題顏色，避免同一行出現兩種紫 */
+  .card h2 a,
+  .card h3 a {
+    color: inherit;
+    border-bottom-color: transparent;
+  }
+  .card h2 a:hover,
+  .card h3 a:hover {
+    border-bottom-color: currentColor;
+  }
+
+  /* ===== 個人大頭照 ===== */
+  .photo {
+    display: block;
+    width: 100%;
+    max-width: 360px;
+    height: auto;
+    margin: 1.5rem auto 0;
+    border-radius: 12px;
+    object-fit: cover;
+  }
+
+  /* ===== 興趣清單 ===== */
+  .card ul {
+    margin: 0;
+    padding-left: 1.25rem;
+  }
+  .card ul li { margin-bottom: .4rem; }
+  .card ul li::marker { color: var(--primary); }
+
+  /* ===== 表格 ===== */
+  .table-wrap {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+  }
+  table {
+    width: 100%;
+    min-width: 320px;
+    border-collapse: collapse;
+    font-size: .975rem;
+  }
+  thead th {
+    background: var(--primary-soft);
+    color: var(--primary-dark);
+    font-weight: 600;
+    text-align: center;
+    padding: .9rem 1rem;
+    border-bottom: 2px solid var(--primary);
+  }
+  tbody td {
+    text-align: center;
+    padding: .85rem 1rem;
+    border-bottom: 1px solid var(--border);
+  }
+  tbody tr:last-child td { border-bottom: none; }
+  tbody tr:nth-child(even) { background: #faf9ff; }
+  tbody tr:hover { background: var(--primary-soft); }
+
+  /* ===== 影片：等比縮放 ===== */
+  .video-wrap {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    border-radius: 12px;
+    overflow: hidden;
+    background: #000;
+  }
+  .video-wrap iframe {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+  }
+
+  /* ===== 手機版微調 ===== */
+  @media (max-width: 640px) {
+    .hero { padding: 3rem 1.25rem 2.75rem; }
+    main { padding: 0 1rem; margin-top: -1.5rem; }
+    .card { padding: 1.5rem 1.25rem; }
+    .card h2 { font-size: 1.2rem; }
+  }
+</style>
+</head>
+<body>
+
+  <header class="hero">
+    <h1>這是 B11415043 陳冠年的第一個網頁</h1>
+  </header>
+
+  <main>
+
+    <!-- 卡片 1：學校與科系 -->
+    <section class="card">
+      <h2>我就讀 <a href="https://www.uch.edu.tw/app/home.php">健行科技大學</a></h2>
+      <h3><a href="https://www.dmd.uch.edu.tw/">數媒系</a> 二甲</h3>
+
+      <img
+        class="photo"
+        src="https://drive.google.com/thumbnail?id=1lBskZUtr11bqetWwPuNq3Q4hlsRWwZrD&sz=w500"
+        alt="我的照片">
+    </section>
+
+    <!-- 卡片 2：興趣 -->
+    <section class="card">
+      <h2>我的興趣</h2>
+      <ul>
+        <li>打遊戲</li>
+        <li>聽音樂</li>
+        <li>看影片</li>
+      </ul>
+    </section>
+
+    <!-- 卡片 3：就讀學校 -->
+    <section class="card">
+      <h2>冠年的就讀學校</h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th scope="col">學校</th>
+              <th scope="col">就讀時間</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>忠貞國小</td><td>2014-2019</td></tr>
+            <tr><td>龍岡國中</td><td>2019-2022</td></tr>
+            <tr><td>新興高中</td><td>2022-2025</td></tr>
+            <tr><td>健行科技大學</td><td>2025-2028</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- 卡片 4：期末作業影片 -->
+    <section class="card">
+      <h2>B11415043 程式設計期末作業</h2>
+      <div class="video-wrap">
+        <iframe
+          src="https://www.youtube-nocookie.com/embed/bv7PU_jKoWU"
+          title="影片作品"
+          referrerpolicy="strict-origin-when-cross-origin"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          allowfullscreen>
+        </iframe>
+      </div>
+    </section>
+
+  </main>
+
+</body>
+</html>
